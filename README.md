@@ -10,3 +10,13 @@ This script calculate high x of y of time series data like following.
 | 2021-11-01 00:30 |   156 |
 | ...              |   ... |
 | 2021-11-30 24:00 |   203 |
+
+# Usage
+
+```
+docker compose up -d
+```
+
+```
+docker compose run highxofy python -m highxofy
+```
