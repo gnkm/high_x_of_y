@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  highxofy:
+    build: ./highxofy
+    container_name: highxofy
+    volumes:
+      - .:/tmp/working
+    working_dir: /tmp/working/highxofy
