@@ -1,3 +1,12 @@
+highxofy/highxofy/data/*
+!highxofy/highxofy/data/.gitkeep
+!highxofy/highxofy/data/input
+highxofy/highxofy/data/input/*
+!highxofy/highxofy/data/input/.gitkeep
+!highxofy/highxofy/data/output
+highxofy/highxofy/data/output/*
+!highxofy/highxofy/data/output/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
