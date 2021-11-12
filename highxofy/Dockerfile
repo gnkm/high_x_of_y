@@ -5,6 +5,7 @@ COPY pyproject.toml /
 RUN apk add \
         libffi-dev \
         musl-dev \
+        g++ \
         gcc && \
     pip install --upgrade pip && \
     pip install poetry==1.1.11 && \
