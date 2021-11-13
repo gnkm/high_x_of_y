@@ -16,7 +16,7 @@ def main():
     output_file = args.output_file
     df_org = pd.read_csv(input_file)
     df_calculated = calculator.calculate(df_org)
-    df_calculated.to_csv(output_file)
+    df_calculated.to_csv(output_file, index=False)
     sys.exit()
 
 
