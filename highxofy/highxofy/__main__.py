@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
     input_file = args.input_file
     output_file = args.output_file
-    df_org = pd.read_csv(input_file)
+    df_org = pd.read_csv(input_file, parse_dates=['datetime'])
     df_calculated = calculator.calculate(df_org)
     df_calculated.to_csv(output_file, index=False)
     sys.exit()
