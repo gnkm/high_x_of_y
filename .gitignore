@@ -3,6 +3,7 @@ highxofy/data/*
 !highxofy/data/input
 highxofy/data/input/*
 !highxofy/data/input/.gitkeep
+!highxofy/data/input/sample.csv
 !highxofy/data/output
 highxofy/data/output/*
 !highxofy/data/output/.gitkeep
