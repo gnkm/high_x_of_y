@@ -34,8 +34,10 @@ def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
     dfs_org['weekday'] = df_org.query('is_weekday == True')
     dfs_org['holiday'] = df_org.query('is_weekday == False')
     dfs_calced: List[pd.DataFrame] = []
-    for df_day_type in dfs_org.values():
-        df_calced = _high4of5(df_day_type)
+    for day_type, df_day_type in dfs_org.items():
+        x = CONFIGS[day_type]['x']
+        y = CONFIGS[day_type]['y']
+        df_calced = _high_x_of_y(df_day_type, x, y)
         dfs_calced.append(df_calced)
 
     df = pd.concat(dfs_calced)
