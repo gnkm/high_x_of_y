@@ -1,3 +1,4 @@
+highxofy/configs/config.toml
 highxofy/data/*
 !highxofy/data/.gitkeep
 !highxofy/data/input

@@ -1,0 +1,27 @@
+# If minits / unit is 30 min, set 48(= 24 h / 0.5 h).
+unit_num_per_day = 48
+# If you can use the data from 5 unit ago, set 5.
+enable_to_use_data_from_unit_ago = 96  # = 2 days * 48 units / day
+
+[same_day_correction]
+applied = false
+
+[same_day_correction.refered_units_ago]
+# In ERAB guidline, set this value at 11 and 5.
+# i.e. refer from 5 hours ago to 2 hours ago.
+from = 11
+to = 5
+
+[calced_target_units]
+from = 17
+to = 40
+
+[weekday]
+# high x of y
+x = 4
+y = 5
+
+[holiday]
+# high x of y
+x = 2
+y = 3
