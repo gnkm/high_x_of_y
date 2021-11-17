@@ -68,47 +68,6 @@ def _add_columns(df_demand: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: contain demand and holidays.
     """
-    def _applied_is_weekday(row: pd.Series) -> bool:
-        """Return whether weekday or not.
-
-        Args:
-            row (pd.Series): one record of dataframe.
-
-        Returns:
-            bool: weekday: True, otherwise: False
-        """
-        if row['day_of_week'] in [SAT, SUN]:
-            return False
-        if row['is_pub_holiday']:
-            return False
-        return True
-
-
-    def _add_unit_num_column(df: pd.DataFrame, unit_num_per_day: int) -> pd.DataFrame:
-        """Return dataframe added unit num columns.
-        When `UNIT_NUM_PER_DAY` is 48, return `[1, 2, ..., 48, 1, 2, ...]`.
-
-        Args:
-            df (pd.DataFrame):
-            UNIT_NUM_PER_DAY (int)
-
-        Returns:
-            pd.DataFrame: dataframe added unit num columns.
-        """
-        elements: List[int] = []
-        for i in range(1, df.shape[0] + 1):
-            mod = i % unit_num_per_day
-            if mod != 0:
-                elements.append(mod)
-            else:
-                elements.append(unit_num_per_day)
-
-        df_elements: pd.DataFrame = pd.DataFrame({'unit_num': elements})
-        df_ret = pd.concat([df, df_elements], axis='columns')
-
-        return df_ret
-
-
     df_holidays = pd.read_csv(PUBLIC_HOLIDAYS_FILE, parse_dates=['date'])
     df_holidays['is_pub_holiday'] = True
 
@@ -124,6 +83,41 @@ def _add_columns(df_demand: pd.DataFrame) -> pd.DataFrame:
     df = _add_unit_num_column(df, UNIT_NUM_PER_DAY)
 
     return df
+
+
+def _applied_is_weekday(row: pd.Series) -> bool:
+    """Return whether weekday or not.
+    Args:
+        row (pd.Series): one record of dataframe.
+    Returns:
+        bool: weekday: True, otherwise: False
+    """
+    if row['day_of_week'] in [SAT, SUN]:
+        return False
+    if row['is_pub_holiday']:
+        return False
+    return True
+
+
+def _add_unit_num_column(df: pd.DataFrame, unit_num_per_day: int) -> pd.DataFrame:
+    """Return dataframe added unit num columns.
+    When `UNIT_NUM_PER_DAY` is 48, return `[1, 2, ..., 48, 1, 2, ...]`.
+    Args:
+        df (pd.DataFrame):
+        UNIT_NUM_PER_DAY (int)
+    Returns:
+        pd.DataFrame: dataframe added unit num columns.
+    """
+    elements: List[int] = []
+    for i in range(1, df.shape[0] + 1):
+        mod = i % unit_num_per_day
+        if mod != 0:
+            elements.append(mod)
+        else:
+            elements.append(unit_num_per_day)
+    df_elements: pd.DataFrame = pd.DataFrame({'unit_num': elements})
+    df_ret = pd.concat([df, df_elements], axis='columns')
+    return df_ret
 
 
 def _high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
