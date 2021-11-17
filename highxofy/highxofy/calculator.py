@@ -34,7 +34,7 @@ def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe contain high x of y result.
     """
-    df_org = _add_df_holidays(df_demand)
+    df_org = _add_columns(df_demand)
     dfs_org: Dict[str, pd.DataFrame] = {}
     dfs_org['weekday'] = df_org.query('is_weekday == True')
     dfs_org['holiday'] = df_org.query('is_weekday == False')
@@ -50,10 +50,8 @@ def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
-    """Return a dataframe contains demand and holidays.
-
-    Specifically, generate following columns.
+def _add_columns(df_demand: pd.DataFrame) -> pd.DataFrame:
+    """Return a dataframe contains following columns.
 
     - datetime
     - demand
