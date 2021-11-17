@@ -143,4 +143,9 @@ def _high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
 
     df_calced = df.copy()
 
+    for go_back_day in range(1, days_ago + 1):
+        column_name: str = f'demand_{go_back_day}_days_ago'
+        _df = df.copy()
+        df_calced[column_name] = _df.shift(go_back_day * unit_num_per_day).loc[:, 'demand']
+
     return df_calced
