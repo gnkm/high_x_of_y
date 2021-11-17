@@ -19,6 +19,6 @@ docker compose up -d
 
 ```
 docker compose run highxofy python -m highxofy \
-  data/input/sample.csv \
+  data/input/sample_input.csv \
   data/output/sample_output.csv
 ```
