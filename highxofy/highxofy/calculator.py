@@ -129,4 +129,18 @@ def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
 
 
 def _high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
-    return df
+    """Calculate high x of y.
+
+    Args:
+        df (pd.DataFrame)
+
+    Returns:
+        pd.DataFrame: Dataframe contain high x of y.
+    """
+    # In ERAB guidline, set this value at 30.
+    days_ago: int = 2 * y
+    unit_num_per_day: int = UNIT_NUM_PER_DAY
+
+    df_calced = df.copy()
+
+    return df_calced
