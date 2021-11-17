@@ -34,12 +34,12 @@ def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe contain high x of y result.
     """
-    df_org = _add_columns(df_demand)
-    dfs_org: Dict[str, pd.DataFrame] = {}
-    dfs_org['weekday'] = df_org.query('is_weekday == True')
-    dfs_org['holiday'] = df_org.query('is_weekday == False')
+    df_base = _add_columns(df_demand)
+    dfs_base: Dict[str, pd.DataFrame] = {}
+    dfs_base['weekday'] = df_base.query('is_weekday == True')
+    dfs_base['holiday'] = df_base.query('is_weekday == False')
     dfs_calced: List[pd.DataFrame] = []
-    for day_type, df_day_type in dfs_org.items():
+    for day_type, df_day_type in dfs_base.items():
         x = CONFIGS[day_type]['x']
         y = CONFIGS[day_type]['y']
         df_calced = _high_x_of_y(df_day_type, x, y)
