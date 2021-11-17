@@ -29,7 +29,16 @@ def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe contain high x of y result.
     """
-    df = _add_df_holidays(df_demand)
+    df_org = _add_df_holidays(df_demand)
+    dfs_org: Dict[str, pd.DataFrame] = {}
+    dfs_org['weekday'] = df_org.query('is_weekday == True')
+    dfs_org['holiday'] = df_org.query('is_weekday == False')
+    dfs_calced: List[pd.DataFrame] = []
+    for df_day_type in dfs_org.values():
+        df_calced = _high4of5(df_day_type)
+        dfs_calced.append(df_calced)
+
+    df = pd.concat(dfs_calced)
 
     return df
 
@@ -83,3 +92,8 @@ def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
     df['is_weekday'] = df.apply(_applied_is_weekday, axis='columns')
 
     return df
+
+
+def _high4of5(df_day_class: pd.DataFrame) -> pd.DataFrame:
+    return df_day_class
+
