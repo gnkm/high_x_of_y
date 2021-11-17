@@ -62,6 +62,7 @@ def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
     - day_of_week
     - is_pub_holiday
     - is_weekday
+    - unit_num
 
     Args:
         df_demand (pd.DataFrame): contain demand.
@@ -85,6 +86,31 @@ def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
         return True
 
 
+    def _add_unit_num_column(df: pd.DataFrame, unit_num_per_day: int) -> pd.DataFrame:
+        """Return dataframe added unit num columns.
+        When `UNIT_NUM_PER_DAY` is 48, return `[1, 2, ..., 48, 1, 2, ...]`.
+
+        Args:
+            df (pd.DataFrame):
+            UNIT_NUM_PER_DAY (int)
+
+        Returns:
+            pd.DataFrame: dataframe added unit num columns.
+        """
+        elements: List[int] = []
+        for i in range(1, df.shape[0] + 1):
+            mod = i % unit_num_per_day
+            if mod != 0:
+                elements.append(mod)
+            else:
+                elements.append(unit_num_per_day)
+
+        df_elements: pd.DataFrame = pd.DataFrame({'unit_num': elements})
+        df_ret = pd.concat([df, df_elements], axis='columns')
+
+        return df_ret
+
+
     df_holidays = pd.read_csv(PUBLIC_HOLIDAYS_FILE, parse_dates=['date'])
     df_holidays['is_pub_holiday'] = True
 
@@ -97,6 +123,7 @@ def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
     )
     df = df.fillna({'is_pub_holiday': False})
     df['is_weekday'] = df.apply(_applied_is_weekday, axis='columns')
+    df = _add_unit_num_column(df, UNIT_NUM_PER_DAY)
 
     return df
 
