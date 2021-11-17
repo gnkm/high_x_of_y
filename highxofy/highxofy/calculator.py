@@ -37,6 +37,16 @@ def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
 def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
     """Return a dataframe contains demand and holidays.
 
+    Specifically, generate following columns.
+
+    - datetime
+    - demand
+    - invoked
+    - date
+    - day_of_week
+    - is_pub_holiday
+    - is_weekday
+
     Args:
         df_demand (pd.DataFrame): contain demand.
 
