@@ -2,12 +2,14 @@
 """
 
 import sys  # noqa: F401  # pylint: disable=unused-import
+import toml
 from typing import Any, Dict, List, MutableMapping, Union  # noqa: F401  # pylint: disable=unused-import
 
 import icecream  # noqa: F401  # pylint: disable=unused-import
 import pandas as pd
 
 
+CONFIG_FILE: str = 'configs/config.toml'
 PUBLIC_HOLIDAYS_FILE: str = 'configs/public_holidays.csv'
 
 # day of weeks
@@ -18,6 +20,9 @@ THU = 3
 FRI = 4
 SAT = 5
 SUN = 6
+
+CONFIGS: MutableMapping[str, Any] = toml.load(CONFIG_FILE)
+UNIT_NUM_PER_DAY: int = CONFIGS['unit_num_per_day']
 
 
 def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
@@ -96,6 +101,5 @@ def _add_df_holidays(df_demand: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _high4of5(df_day_class: pd.DataFrame) -> pd.DataFrame:
-    return df_day_class
-
+def _high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
+    return df
