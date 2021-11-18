@@ -7,6 +7,9 @@ import icecream  # noqa: F401  # pylint: disable=unused-import
 from highxofy import calculator
 
 
+PUBLIC_HOLIDAYS_FILE: str = 'configs/public_holidays.csv'
+
+
 def main():
     """Dump result file in output directory.
     """
@@ -14,8 +17,9 @@ def main():
     args = parser.parse_args()
     input_file = args.input_file
     output_file = args.output_file
-    df_org = pd.read_csv(input_file, parse_dates=['datetime'])
-    df_calculated = calculator.calculate(df_org)
+    df_demand = pd.read_csv(input_file, parse_dates=['datetime'])
+    df_holidays = pd.read_csv(PUBLIC_HOLIDAYS_FILE, parse_dates=['date'])
+    df_calculated = calculator.calculate(df_demand, df_holidays)
     df_calculated.to_csv(output_file, index=False)
     sys.exit()
 

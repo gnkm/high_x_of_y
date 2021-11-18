@@ -10,7 +10,6 @@ import pandas as pd
 
 
 CONFIG_FILE: str = 'configs/config.toml'
-PUBLIC_HOLIDAYS_FILE: str = 'configs/public_holidays.csv'
 
 # day of weeks
 MON = 0
@@ -25,16 +24,17 @@ CONFIGS: MutableMapping[str, Any] = toml.load(CONFIG_FILE)
 UNIT_NUM_PER_DAY: int = CONFIGS['unit_num_per_day']
 
 
-def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
+def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFrame:
     """Return dataframe contain high x of y result.
 
     Args:
         df_demand (pd.DataFrame): Original data. i.e. historical data.
+        df_holiday (pd.DataFrame): Holidays dataframe.
 
     Returns:
         pd.DataFrame: dataframe contain high x of y result.
     """
-    df_base = _add_columns(df_demand)
+    df_base = _add_columns(df_demand, df_holidays)
     dfs_base: Dict[str, pd.DataFrame] = {}
     dfs_base['weekday'] = df_base.query('is_weekday == True')
     dfs_base['holiday'] = df_base.query('is_weekday == False')
@@ -50,7 +50,7 @@ def calculate(df_demand: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _add_columns(df_demand: pd.DataFrame) -> pd.DataFrame:
+def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFrame:
     """Return a dataframe contains following columns.
 
     - datetime
@@ -64,11 +64,11 @@ def _add_columns(df_demand: pd.DataFrame) -> pd.DataFrame:
 
     Args:
         df_demand (pd.DataFrame): contain demand.
+        df_holidays (pd.DataFrame): contain holidays.
 
     Returns:
         pd.DataFrame: contain demand and holidays.
     """
-    df_holidays = pd.read_csv(PUBLIC_HOLIDAYS_FILE, parse_dates=['date'])
     df_holidays['is_pub_holiday'] = True
 
     df_demand['date'] = pd.to_datetime(df_demand['datetime'].dt.date)
