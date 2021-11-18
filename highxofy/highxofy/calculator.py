@@ -42,7 +42,7 @@ def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFram
     for day_type, df_day_type in dfs_base.items():
         x = CONFIGS[day_type]['x']
         y = CONFIGS[day_type]['y']
-        df_calced = _high_x_of_y(df_day_type, x, y)
+        df_calced = _mean_high_x_of_y(df_day_type, x, y)
         dfs_calced.append(df_calced)
 
     df = pd.concat(dfs_calced)
@@ -143,14 +143,14 @@ def _add_unit_num_column(df: pd.DataFrame, unit_num_per_day: int) -> pd.DataFram
     return df_ret
 
 
-def _high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
-    """Calculate high x of y.
+def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
+    """Calculate mean of high x of y.
 
     Args:
         df (pd.DataFrame)
 
     Returns:
-        pd.DataFrame: Dataframe contain high x of y.
+        pd.DataFrame: Dataframe contain mean high x of y.
     """
     # In ERAB guidline, set this value at 30.
     days_ago: int = 2 * y
