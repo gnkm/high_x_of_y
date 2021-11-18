@@ -1,7 +1,15 @@
 # If minits / unit is 30 min, set 48(= 24 h / 0.5 h).
 unit_num_per_day = 48
+
 # If you can use the data from 5 unit ago, set 5.
 enable_to_use_data_from_unit_ago = 96  # = 2 days * 48 units / day
+
+# If it is {{excluded_criterion_ratio}} or less of the average of the last y days,
+# it is excluded from the calculation.
+excluded_criterion_ratio = 0.25
+
+# In ERAB guidline, set this value at 30.
+max_go_back_days = 30
 
 [same_day_correction]
 applied = false

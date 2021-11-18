@@ -22,6 +22,8 @@ SUN = 6
 
 CONFIGS: MutableMapping[str, Any] = toml.load(CONFIG_FILE)
 UNIT_NUM_PER_DAY: int = CONFIGS['unit_num_per_day']
+EXCLUDED_CRITERION_RATIO: float = CONFIGS['excluded_criterion_ratio']
+MAX_GO_BACK_DAYS: int = CONFIGS['max_go_back_days']
 
 
 def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFrame:
@@ -152,13 +154,11 @@ def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Dataframe contain mean high x of y.
     """
-    # In ERAB guidline, set this value at 30.
-    max_go_back_days: int = 2 * y
     unit_num_per_day: int = UNIT_NUM_PER_DAY
 
     df_calced = df.copy()
 
-    for go_back_day in range(1, max_go_back_days + 1):
+    for go_back_day in range(1, MAX_GO_BACK_DAYS + 1):
         column_name_demand: str = f'demand_{go_back_day}_days_ago'
         column_name_dr_invoked_day: str = f'dr_invoked_day_{go_back_day}_days_ago'
         _df = df.copy()
