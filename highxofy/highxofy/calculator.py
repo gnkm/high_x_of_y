@@ -55,7 +55,8 @@ def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataF
 
     - datetime
     - demand
-    - invoked
+    - dr_invoked_unit
+    - dr_invoked_day
     - date
     - day_of_week
     - is_pub_holiday
