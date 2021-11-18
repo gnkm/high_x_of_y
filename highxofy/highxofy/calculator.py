@@ -74,7 +74,18 @@ def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataF
 
     df_demand['date'] = pd.to_datetime(df_demand['datetime'].dt.date)
     df_demand['day_of_week'] = df_demand['datetime'].dt.dayofweek
+
+    df_invoked_days = df_demand.groupby('date').sum()[['dr_invoked_unit']] \
+        .reset_index() \
+        .rename(columns={'dr_invoked_unit': 'dr_invoked_day'})
+
     df = df_demand.merge(
+        df_invoked_days,
+        how='left',
+        on='date'
+    )
+
+    df = df.merge(
         df_holidays,
         how='left',
         on='date'
