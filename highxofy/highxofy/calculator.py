@@ -62,6 +62,7 @@ def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataF
     - is_pub_holiday
     - is_weekday
     - unit_num
+    - mean_daily_demand_for_dr
 
     Args:
         df_demand (pd.DataFrame): contain demand.
@@ -81,6 +82,16 @@ def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataF
 
     df = df_demand.merge(
         df_invoked_days,
+        how='left',
+        on='date'
+    )
+
+    df_demand_means_per_invoked_day = df_demand.query('dr_invoked_unit != 0') [['date', 'demand']].groupby('date').mean() \
+        .reset_index() \
+        .rename(columns={'demand': 'mean_daily_demand_for_dr'})
+
+    df = df_demand.merge(
+        df_demand_means_per_invoked_day,
         how='left',
         on='date'
     )
