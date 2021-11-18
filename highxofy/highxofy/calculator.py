@@ -90,7 +90,7 @@ def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataF
         .reset_index() \
         .rename(columns={'demand': 'mean_daily_demand_for_dr'})
 
-    df = df_demand.merge(
+    df = df.merge(
         df_demand_means_per_invoked_day,
         how='left',
         on='date'
@@ -153,16 +153,42 @@ def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
         pd.DataFrame: Dataframe contain mean high x of y.
     """
     # In ERAB guidline, set this value at 30.
-    days_ago: int = 2 * y
+    max_go_back_days: int = 2 * y
     unit_num_per_day: int = UNIT_NUM_PER_DAY
 
     df_calced = df.copy()
 
-    for go_back_day in range(1, days_ago + 1):
+    for go_back_day in range(1, max_go_back_days + 1):
         column_name_demand: str = f'demand_{go_back_day}_days_ago'
         column_name_dr_invoked_day: str = f'dr_invoked_day_{go_back_day}_days_ago'
         _df = df.copy()
         df_calced[column_name_demand] = _df.shift(go_back_day * unit_num_per_day).loc[:, 'demand']
         df_calced[column_name_dr_invoked_day] = _df.shift(go_back_day * unit_num_per_day).loc[:, 'dr_invoked_day']
 
+    for go_back_day in range(1, max_go_back_days + 1):
+        _df = df.copy()
+        column_name_is_calced_target: str = f'is_calced_target_{go_back_day}_days_ago'
+        _df[column_name_is_calced_target] = _df.apply(_applied_is_calced_target, args=[go_back_day, y], axis='columns')
+
     return df_calced
+
+
+def _applied_is_calced_target(row: pd.Series, go_back_day: int, y:int) -> bool:
+    """When demand of `go_back_day` days ago is target of calculating mean, return True.
+
+    If the demand value `go_back_day` days before the row date is in the top x of the y days and
+    is 25% or more of the average value for the y days,
+    it is included in the calculation of the average value, that is, return True.
+
+    Args:
+        row (pd.Series): [description]
+        go_back_day (int): [description]
+        y (int): y of "high x of y"
+
+    Returns:
+        bool: [description]
+
+    Examples:
+        `df[column] = df.apply(_applied_is_calced_target, args=[go_back_day, y], axis='columns')`
+    """
+    return True
