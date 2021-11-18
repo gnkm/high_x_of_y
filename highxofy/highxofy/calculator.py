@@ -168,12 +168,12 @@ def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
     for go_back_day in range(1, max_go_back_days + 1):
         _df = df.copy()
         column_name_is_calced_target: str = f'is_calced_target_{go_back_day}_days_ago'
-        _df[column_name_is_calced_target] = _df.apply(_applied_is_calced_target, args=[go_back_day, y], axis='columns')
+        _df[column_name_is_calced_target] = _df.apply(_applied_is_calced_target, args=[go_back_day, x, y], axis='columns')
 
     return df_calced
 
 
-def _applied_is_calced_target(row: pd.Series, go_back_day: int, y:int) -> bool:
+def _applied_is_calced_target(row: pd.Series, go_back_day: int, x: int, y:int) -> bool:
     """When demand of `go_back_day` days ago is target of calculating mean, return True.
 
     If the demand value `go_back_day` days before the row date is in the top x of the y days and
@@ -183,12 +183,13 @@ def _applied_is_calced_target(row: pd.Series, go_back_day: int, y:int) -> bool:
     Args:
         row (pd.Series): [description]
         go_back_day (int): [description]
+        x (int): x of "high x of y"
         y (int): y of "high x of y"
 
     Returns:
         bool: [description]
 
     Examples:
-        `df[column] = df.apply(_applied_is_calced_target, args=[go_back_day, y], axis='columns')`
+        `df[column] = df.apply(_applied_is_calced_target, args=[go_back_day, x, y], axis='columns')`
     """
     return True
