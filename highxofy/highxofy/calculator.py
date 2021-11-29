@@ -6,6 +6,7 @@ import toml
 from typing import Any, Dict, List, MutableMapping, Union  # noqa: F401  # pylint: disable=unused-import
 
 import icecream  # noqa: F401  # pylint: disable=unused-import
+import numpy as np
 import pandas as pd
 
 
@@ -57,8 +58,9 @@ def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataF
 
     - datetime
     - demand
-    - dr_invoked_unit
-    - dr_invoked_day
+    @todo: not deal as int but bool
+    - dr_invoked_unit: 0: not invoked, 1 invoked
+    - dr_invoked_day: 0: not invoked, otherwise invoked
     - date
     - day_of_week
     - is_pub_holiday
@@ -146,7 +148,10 @@ def _add_unit_num_column(df: pd.DataFrame, unit_num_per_day: int) -> pd.DataFram
 
 
 def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
-    """Calculate mean of high x of y.
+    """Return dataframe contain mean_high_x_of_y column.
+
+    Note:
+        Main logic is `_mean_high_x_of_y_per_row()`.
 
     Args:
         df (pd.DataFrame)
@@ -165,24 +170,62 @@ def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
         df_calced[column_name_demand] = _df.shift(go_back_day * unit_num_per_day).loc[:, 'demand']
         df_calced[column_name_dr_invoked_day] = _df.shift(go_back_day * unit_num_per_day).loc[:, 'dr_invoked_day']
 
-    for go_back_day in range(1, max_go_back_days + 1):
-        _df = df.copy()
-        column_name_is_calced_target: str = f'is_calced_target_{go_back_day}_days_ago'
-        _df[column_name_is_calced_target] = _df.apply(_applied_is_calced_target, args=[go_back_day, x, y], axis='columns')
+    df_calced['mean_high_x_of_y'] = df_calced.apply(_mean_high_x_of_y_per_unit, args=[x, y], axis='columns')
 
     return df_calced
 
 
-def _applied_is_calced_target(row: pd.Series, go_back_day: int, x: int, y:int) -> bool:
-    """When demand of `go_back_day` days ago is target of calculating mean, return True.
+def _mean_high_x_of_y_per_unit(unit_data: pd.Series, x: int, y:int) -> int:
+    """Return mean of high x of y.
+
+    Args:
+        unit_data (pd.Series): data per unit
+        x (int): x of "high x of y"
+        y (int): y of "high x of y"
+
+    Returns:
+        int: mean of high x of y
+
+    Examples:
+        `df['mean_high_x_of_y'] = df.apply(_mean_high_x_of_y_per_unit, args=[x, y], axis='columns')`
+    """
+    y_candidates: List = []
+    days_of_y: List = _get_days_of_y(unit_data, y, y_candidates)
+    demands_of_x: List = _get_demands_of_x(unit_data, x, days_of_y)
+
+    return int(sum(demands_of_x) / len(demands_of_x))
+
+
+def _get_days_of_y(unit_data: pd.Series, y: int, y_candidates: List) -> List:
+    """Return list of days contained y(of high x of y).
+
+    Args:
+        unit_data (pd.Series): data per unit
+        y (int): y of "high x of y"
+        y_candidates (List): list of candidates of days contained y(of "high x of y").
+
+    Returns:
+        List: list of days contained y(of high x of y).
+    """
+    days_of_y = [1, 2, 3, 4, 5]
+    return days_of_y
+
+
+def _get_demands_of_x(unit_data: pd.Series, x, days_of_y: List) -> List:
+    demands_of_x = [10, 20, 30, 40]
+    return demands_of_x
+
+
+def _not_necessary():
+    """When demand of `days_ago` days ago is target of calculating mean, return True.
 
     If the demand value `go_back_day` days before the row date is in the top x of the y days and
-    is 25% or more of the average value for the y days,
+    is `EXCLUDED_CRITERION_RATIO` or more of the average value for the y days,
     it is included in the calculation of the average value, that is, return True.
 
     Args:
         row (pd.Series): [description]
-        go_back_day (int): [description]
+        days_ago (int): target day judged whether the day is adopted or not.
         x (int): x of "high x of y"
         y (int): y of "high x of y"
 
@@ -192,4 +235,4 @@ def _applied_is_calced_target(row: pd.Series, go_back_day: int, x: int, y:int) -
     Examples:
         `df[column] = df.apply(_applied_is_calced_target, args=[go_back_day, x, y], axis='columns')`
     """
-    return True
+    pass
