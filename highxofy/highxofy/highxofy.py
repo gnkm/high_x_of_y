@@ -160,7 +160,7 @@ def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
         Main logic is `_mean_high_x_of_y_per_row()`.
 
     Args:
-        df (pd.DataFrame)
+        df (pd.DataFrame): DataFrame made by `_make_df_base()`.
 
     Returns:
         pd.DataFrame: Dataframe contain mean high x of y.
