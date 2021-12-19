@@ -41,7 +41,7 @@ def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFram
         df_holiday (pd.DataFrame): Holidays dataframe.
 
     Returns:
-        pd.DataFrame: dataframe contain high x of y result.
+        pd.DataFrame: dataframe contain average of high x of y.
     """
     df_base = _make_df_base(df_demand, df_holidays)
     df_bases: Dict[str, pd.DataFrame] = {}
