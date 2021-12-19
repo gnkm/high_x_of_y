@@ -43,7 +43,7 @@ def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFram
     Returns:
         pd.DataFrame: dataframe contain high x of y result.
     """
-    df_base = _add_columns(df_demand, df_holidays)
+    df_base = _make_df_base(df_demand, df_holidays)
     df_bases: Dict[str, pd.DataFrame] = {}
     df_bases['weekday'] = df_base.query('is_weekday == True')
     df_bases['holiday'] = df_base.query('is_weekday == False')
@@ -59,7 +59,7 @@ def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFram
     return df
 
 
-def _add_columns(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFrame:
+def _make_df_base(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFrame:
     """Return a dataframe contains following columns.
 
     - datetime
