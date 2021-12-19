@@ -44,17 +44,17 @@ def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFram
         pd.DataFrame: dataframe contain high x of y result.
     """
     df_base = _add_columns(df_demand, df_holidays)
-    dfs_base: Dict[str, pd.DataFrame] = {}
-    dfs_base['weekday'] = df_base.query('is_weekday == True')
-    dfs_base['holiday'] = df_base.query('is_weekday == False')
-    dfs_calced: List[pd.DataFrame] = []
-    for day_type, df_day_type in dfs_base.items():
+    df_bases: Dict[str, pd.DataFrame] = {}
+    df_bases['weekday'] = df_base.query('is_weekday == True')
+    df_bases['holiday'] = df_base.query('is_weekday == False')
+    df_calceds: List[pd.DataFrame] = []
+    for day_type, df_day_type in df_bases.items():
         x = CONFIGS[day_type]['x']
         y = CONFIGS[day_type]['y']
         df_calced = _mean_high_x_of_y(df_day_type, x, y)
-        dfs_calced.append(df_calced)
+        df_calceds.append(df_calced)
 
-    df = pd.concat(dfs_calced)
+    df = pd.concat(df_calceds)
 
     return df
 
