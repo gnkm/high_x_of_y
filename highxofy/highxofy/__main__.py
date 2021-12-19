@@ -4,7 +4,7 @@ import sys
 import pandas as pd
 import icecream  # noqa: F401  # pylint: disable=unused-import
 
-from highxofy import calculator
+from highxofy import highxofy
 
 
 PUBLIC_HOLIDAYS_FILE: str = 'configs/public_holidays.csv'
@@ -19,7 +19,7 @@ def main():
     output_file = args.output_file
     df_demand = pd.read_csv(input_file, parse_dates=['datetime'])
     df_holidays = pd.read_csv(PUBLIC_HOLIDAYS_FILE, parse_dates=['date'])
-    df_calculated = calculator.calculate(df_demand, df_holidays)
+    df_calculated = highxofy.calculate(df_demand, df_holidays)
     df_calculated.to_csv(output_file, index=False)
     sys.exit()
 
