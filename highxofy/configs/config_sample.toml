@@ -5,7 +5,7 @@ unit_num_per_day = 48
 # only the data before 10/18 can be used.
 # In this case, this variable is set to 2
 # because only the data 2 days before the calculation target date can be used.
-enable_to_use_data_from_day_ago = 2
+enable_to_use_data_from_days_ago = 2
 
 # If it is {{excluded_criterion_ratio}} or less of the average of the last y days,
 # it is excluded from the calculation.
