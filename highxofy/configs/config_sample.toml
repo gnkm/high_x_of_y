@@ -1,8 +1,11 @@
 # If minits / unit is 30 min, set 48(= 24 h / 0.5 h).
 unit_num_per_day = 48
 
-# If you can use the data from 5 unit ago, set 5.
-enable_to_use_data_from_unit_ago = 96  # = 2 days * 48 units / day
+# For example, if the day to calculate the value of 10/20 is 10/19,
+# only the data before 10/18 can be used.
+# In this case, this variable is set to 2
+# because only the data 2 days before the calculation target date can be used.
+enable_to_use_data_from_day_ago = 2
 
 # If it is {{excluded_criterion_ratio}} or less of the average of the last y days,
 # it is excluded from the calculation.
