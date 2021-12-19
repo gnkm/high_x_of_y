@@ -1,6 +1,6 @@
 # high_x_of_y
 
-High x of y is one of the power demand forecasting methods and is described in [ERAB guidline](https://www.meti.go.jp/press/2020/06/20200601001/20200601001-1.pdf).
+High x of y is one of the methods to estimate the power demand and is described in [ERAB guidline](https://www.meti.go.jp/press/2020/06/20200601001/20200601001-1.pdf).
 
 This script calculate high x of y of time series data like following.
 
