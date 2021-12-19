@@ -163,7 +163,7 @@ def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
         df (pd.DataFrame): DataFrame made by `_make_df_base()`.
 
     Returns:
-        pd.DataFrame: Dataframe contain mean high x of y.
+        pd.DataFrame: Dataframe contain average of high x of y.
     """
     unit_num_per_day: int = UNIT_NUM_PER_DAY
 
