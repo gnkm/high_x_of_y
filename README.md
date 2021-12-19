@@ -14,11 +14,7 @@ This script calculate high x of y of time series data like following.
 # Usage
 
 ```
-docker compose up -d
-```
-
-```
 docker compose run highxofy python -m highxofy \
-  data/input/sample_input.csv \
-  data/output/sample_output.csv
+  data/input/sample_demand.csv \
+  data/output/sample_highxofy.csv
 ```
