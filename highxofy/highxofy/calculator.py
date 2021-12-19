@@ -1,4 +1,7 @@
 """Calculate high x of y.
+
+Todo:
+    Load configs in `__main__.py` for making it easier to test.
 """
 
 import sys  # noqa: F401  # pylint: disable=unused-import
@@ -29,6 +32,9 @@ MAX_GO_BACK_DAYS: int = CONFIGS['max_go_back_days']
 
 def calculate(df_demand: pd.DataFrame, df_holidays: pd.DataFrame) -> pd.DataFrame:
     """Return dataframe contain high x of y result.
+
+    Todo:
+        Change arguments for making it easier to test.
 
     Args:
         df_demand (pd.DataFrame): Original data. i.e. historical data.
