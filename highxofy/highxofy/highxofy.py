@@ -165,20 +165,34 @@ def _mean_high_x_of_y(df: pd.DataFrame, x: int, y:int) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Dataframe contain average of high x of y.
     """
-    unit_num_per_day: int = UNIT_NUM_PER_DAY
-
     df_calced = df.copy()
-
-    for go_back_day in range(1, MAX_GO_BACK_DAYS + 1):
-        column_name_demand: str = f'demand_{go_back_day}_days_ago'
-        column_name_dr_invoked_day: str = f'dr_invoked_day_{go_back_day}_days_ago'
-        _df = df.copy()
-        df_calced[column_name_demand] = _df.shift(go_back_day * unit_num_per_day).loc[:, 'demand']
-        df_calced[column_name_dr_invoked_day] = _df.shift(go_back_day * unit_num_per_day).loc[:, 'dr_invoked_day']
-
+    df_calced = _add_past_data_cols(df_calced)
     df_calced['mean_high_x_of_y'] = df_calced.apply(_mean_high_x_of_y_per_unit, args=[x, y], axis='columns')
 
     return df_calced
+
+
+def _add_past_data_cols(df: pd.DataFrame) -> pd.DataFrame:
+    """Return dataframe contain shifted columns.
+    i.e. dataframe added following cols .
+
+    - `f'demand_{go_back_day}_days_ago'`
+    - `f'dr_invoked_day_{go_back_day}_days_ago'`
+
+    Args:
+        df (pd.DataFrame): DataFrame made by `_make_df_base()`.
+
+    Returns:
+        pd.DataFrame: Dataframe contain shifted columns.
+    """
+    df_ret = df.copy()
+    for go_back_day in range(1, MAX_GO_BACK_DAYS + 1):
+        column_name_demand: str = f'demand_{go_back_day}_days_ago'
+        column_name_dr_invoked_day: str = f'dr_invoked_day_{go_back_day}_days_ago'
+        df_ret[column_name_demand] = df_ret.shift(go_back_day * UNIT_NUM_PER_DAY).loc[:, 'demand']
+        df_ret[column_name_dr_invoked_day] = df_ret.shift(go_back_day * UNIT_NUM_PER_DAY).loc[:, 'dr_invoked_day']
+
+    return df_ret
 
 
 def _mean_high_x_of_y_per_unit(unit_data: pd.Series, x: int, y:int) -> int:
