@@ -234,25 +234,3 @@ def _get_days_of_y(unit_data: pd.Series, y: int, y_candidates: List) -> List:
 def _get_demands_of_x(unit_data: pd.Series, x, days_of_y: List) -> List:
     demands_of_x = [10, 20, 30, 40]
     return demands_of_x
-
-
-def _not_necessary():
-    """When demand of `days_ago` days ago is target of calculating mean, return True.
-
-    If the demand value `go_back_day` days before the row date is in the top x of the y days and
-    is `EXCLUDED_CRITERION_RATIO` or more of the average value for the y days,
-    it is included in the calculation of the average value, that is, return True.
-
-    Args:
-        row (pd.Series): [description]
-        days_ago (int): target day judged whether the day is adopted or not.
-        x (int): x of "high x of y"
-        y (int): y of "high x of y"
-
-    Returns:
-        bool: [description]
-
-    Examples:
-        `df[column] = df.apply(_applied_is_calced_target, args=[go_back_day, x, y], axis='columns')`
-    """
-    pass
